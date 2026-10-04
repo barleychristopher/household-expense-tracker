@@ -1,40 +1,29 @@
-# Household Expense Tracker — version 1.2
+# Household Expense Tracker 1.3
 
-A free, Android-friendly household budgeting PWA. It keeps personal spending separate from shared spending, tracks recurring bills, offsets those bills with net rental income, and calculates a monthly settlement between two partners.
+A mobile-friendly, installable web app for tracking personal and shared household finances in GBP. It stores records locally in the browser; it does not sync data between devices.
 
-## What is new in v1.2
-- Monthly take-home salary figures for both partners.
-- Net rental income (rent less entered property costs) offsets recurring household bills first because rent is received into the account that pays those bills.
-- The remaining recurring bills are split in proportion to the two salaries only.
-- Shared grocery budget defaults to £500 per month and tracks expenses in the Groceries category marked Shared.
-- Transactions can be marked Personal or Shared. Personal grocery transactions are excluded from the shared grocery budget and settlement.
-- Separate monthly personal spending budgets for each partner.
-- Monthly settlement shows the partner's share of remaining recurring bills and shared groceries, credits groceries paid by the partner, and subtracts transfers already received.
+## Features
+- Manual transaction entry with personal/shared classification.
+- Household monthly summary: both salaries, net rental income, recurring shared bills, shared grocery spend and budget, estimated disposable income for each person, and settlement balance.
+- Proportional split of recurring shared bills based on the two salaries after net rental income is applied against the bills.
+- Shared grocery budget (default £500/month) and settlement tracking for transfers already received.
+- Separate personal budgets and personal recurring bills (e.g. car finance, personal insurance, phone contracts), assigned to either household member.
+- Monthly, weekly, quarterly and annual recurring-bill frequencies converted to monthly equivalents.
 - JSON backup/restore and CSV transaction export.
+- Installable PWA shell and basic offline app caching.
 
-## Important calculation rules
-1. Net rent is `max(0, rent received - property costs)`.
-2. Net rent offsets recurring bills up to the value of those bills. Any excess rental income is not carried forward or applied to groceries in this version.
-3. The remaining recurring bills are split using salary percentages. If both salaries are zero, the app uses a 50/50 split.
-4. Shared grocery spending is based on expense transactions in the Groceries category marked Shared. The £500 limit is a budget, not an automatic bill.
-5. The monthly settlement is an estimate: partner share of remaining bills + partner share of shared groceries - groceries paid by partner - transfers already received. A negative result means the app calculates that you owe your partner.
-6. Property costs are whatever costs you choose to enter; this is not a tax or accounting calculation.
+## Publish with GitHub Pages
+1. Export a JSON backup from the existing app before updating.
+2. Extract this ZIP.
+3. Upload the *contents* of this folder to the root of the existing GitHub repository, replacing matching files and adding new files.
+4. In GitHub, open Settings → Pages and ensure the existing Pages source is still configured.
+5. Wait for deployment to complete, then open the same published URL in Chrome and refresh/reopen the app.
+6. Check existing records are present before continuing. Do not clear browser site data.
 
-## Updating an existing GitHub Pages app
-1. Download and extract the ZIP.
-2. In your existing GitHub repository, upload the files from the extracted folder to the repository root and choose to replace/overwrite existing files when prompted. Include `index.html`, `manifest.json`, `sw.js`, `icon.svg`, `icon-192.png`, `icon-512.png`, and `README.md`.
-3. Wait for GitHub Pages deployment to finish. Open the same published URL in Chrome on Android and refresh it; if needed, close the app completely and reopen it, then refresh again. The service worker cache name has changed so the new app shell can be downloaded.
-4. The app uses the same browser storage key and upgrades saved data in place, so replacing the code should not delete existing transactions. Nevertheless, before updating, open the old app and use Settings → Export backup. Never use Clear site data to force an update unless you have a verified backup, because that can erase local records.
-5. Test a small sample transaction, the £500 grocery budget, income figures, recurring bills, settlement, and JSON export/restore before relying on the new version.
-
-## Local data and privacy
-- Records stay in the browser profile on the device; this version does not sync between phones.
-- Do not commit transaction exports or JSON backups to GitHub. Keep your repository free of real household financial records.
-- Export backups regularly. Clearing browser/site storage can erase records.
-- The app does not connect to bank accounts.
-
-## PWA files
-- `index.html` — app interface and logic
-- `manifest.json` — installable app metadata
-- `sw.js` — offline app-shell cache
-- `icon-192.png`, `icon-512.png`, `icon.svg` — app icons
+## Notes on calculations
+- Net rental income is rent received minus entered property costs, floored at zero. It is applied against shared recurring bills before the remaining bill balance is split between the two salaries.
+- The £500 grocery budget is a tracking limit. Shared grocery spend is allocated by the salary-based percentages for the settlement calculation.
+- Estimated disposable income = monthly take-home salary − allocated remaining shared bills − allocated shared groceries − active personal recurring bills − recorded personal expenses for that month. If the same personal recurring bill is also entered as a personal transaction, it will be deducted twice; enter it in one place only.
+- Personal recurring bills do not affect shared bill contributions or settlement.
+- If net rent exceeds recurring shared bills, excess rent is not carried forward or applied to groceries in this version.
+- Data is stored in the browser's local storage. Use Settings → Export backup regularly. The app does not yet synchronise across devices.
