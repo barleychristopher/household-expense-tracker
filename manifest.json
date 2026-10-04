@@ -1,16 +1,14 @@
 {
-  "id": "./",
   "name": "Household Expense Tracker",
   "short_name": "Household Tracker",
-  "description": "A simple, private household expense tracker.",
-  "start_url": "./index.html",
+  "description": "A private household budget and expense tracker",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f4f7f8",
   "theme_color": "#075e59",
-  "prefer_related_applications": false,
   "icons": [
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
   ]
 }

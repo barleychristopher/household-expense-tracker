@@ -1,47 +1,40 @@
-# Household Expense Tracker (MVP)
+# Household Expense Tracker — version 1.2
 
-A free, mobile-friendly Progressive Web App for manually tracking shared household expenses and income. It uses browser localStorage; no account, server, bank connection, or subscription is required for the first version.
+A free, Android-friendly household budgeting PWA. It keeps personal spending separate from shared spending, tracks recurring bills, offsets those bills with net rental income, and calculates a monthly settlement between two partners.
 
-## Features
-- Add, edit and delete expense/income transactions
-- Category, date, amount, payment method, notes, and household member
-- Monthly totals and category budget limits
-- Transaction search and filters
-- Six-month report chart and category breakdown
-- Add/edit categories and household member names
-- Export full JSON backup, export transactions to CSV, restore JSON backup
-- PWA manifest and service worker for installation/offline app shell
+## What is new in v1.2
+- Monthly take-home salary figures for both partners.
+- Net rental income (rent less entered property costs) offsets recurring household bills first because rent is received into the account that pays those bills.
+- The remaining recurring bills are split in proportion to the two salaries only.
+- Shared grocery budget defaults to £500 per month and tracks expenses in the Groceries category marked Shared.
+- Transactions can be marked Personal or Shared. Personal grocery transactions are excluded from the shared grocery budget and settlement.
+- Separate monthly personal spending budgets for each partner.
+- Monthly settlement shows the partner's share of remaining recurring bills and shared groceries, credits groceries paid by the partner, and subtracts transfers already received.
+- JSON backup/restore and CSV transaction export.
 
-## Important limitations
-- Data stays in the current browser profile on the current device. Installing the app on another phone does not share or sync data.
-- Export JSON backups regularly. Clearing browser/site data can erase records.
-- The local browser storage is not an encrypted financial database; protect your device and browser profile.
-- No bank integration, account login, or cloud sync is included.
+## Important calculation rules
+1. Net rent is `max(0, rent received - property costs)`.
+2. Net rent offsets recurring bills up to the value of those bills. Any excess rental income is not carried forward or applied to groceries in this version.
+3. The remaining recurring bills are split using salary percentages. If both salaries are zero, the app uses a 50/50 split.
+4. Shared grocery spending is based on expense transactions in the Groceries category marked Shared. The £500 limit is a budget, not an automatic bill.
+5. The monthly settlement is an estimate: partner share of remaining bills + partner share of shared groceries - groceries paid by partner - transfers already received. A negative result means the app calculates that you owe your partner.
+6. Property costs are whatever costs you choose to enter; this is not a tax or accounting calculation.
 
-## Quick test on a computer
-1. Unzip the project folder.
-2. In the folder, run a local web server (Python installed): `python -m http.server 8000`
-3. Open `http://localhost:8000` in Chrome.
-4. Add sample transactions, adjust budgets, export JSON/CSV, then test restoring a JSON backup.
+## Updating an existing GitHub Pages app
+1. Download and extract the ZIP.
+2. In your existing GitHub repository, upload the files from the extracted folder to the repository root and choose to replace/overwrite existing files when prompted. Include `index.html`, `manifest.json`, `sw.js`, `icon.svg`, `icon-192.png`, `icon-512.png`, and `README.md`.
+3. Wait for GitHub Pages deployment to finish. Open the same published URL in Chrome on Android and refresh it; if needed, close the app completely and reopen it, then refresh again. The service worker cache name has changed so the new app shell can be downloaded.
+4. The app uses the same browser storage key and upgrades saved data in place, so replacing the code should not delete existing transactions. Nevertheless, before updating, open the old app and use Settings → Export backup. Never use Clear site data to force an update unless you have a verified backup, because that can erase local records.
+5. Test a small sample transaction, the £500 grocery budget, income figures, recurring bills, settlement, and JSON export/restore before relying on the new version.
 
-## Publish for Android installation
-A PWA must be served over HTTPS (or localhost for development) to be installable in supporting browsers.
+## Local data and privacy
+- Records stay in the browser profile on the device; this version does not sync between phones.
+- Do not commit transaction exports or JSON backups to GitHub. Keep your repository free of real household financial records.
+- Export backups regularly. Clearing browser/site storage can erase records.
+- The app does not connect to bank accounts.
 
-Free static hosting option: GitHub Pages.
-1. Create/sign into a GitHub account.
-2. Create a new repository. Do not put real household financial data in the repository.
-3. Upload the files in this folder to the repository root (index.html, manifest.json, sw.js, icons and README).
-4. In repository Settings → Pages, enable deployment from the `main` branch and root folder.
-5. Wait for the published HTTPS site URL, then open it in Chrome on Android.
-6. Use Chrome menu → **Install app** or **Add to Home screen** (wording varies).
-7. Test add/edit/delete, export a backup, close/reopen, and offline behavior before relying on it.
-
-## Household sharing
-This first version tracks who paid, but the data itself is local. For both partners to see the same live records, a next version needs authentication and a shared cloud database (for example Supabase or Firebase), plus security rules and privacy testing. Don't use the local-only version as the sole record of important financial data.
-
-
-## Proportional recurring-bill splitting (v1.1)
-
-Open **Split bills** to enter each person's monthly take-home income, monthly rental income received, and monthly property costs. Net rental income is calculated as rent minus those costs and treated as shared income, allocated equally to both partners when calculating contribution percentages. Add recurring household bills and choose weekly, monthly, quarterly, or annual frequency; each is converted to a monthly equivalent. Only active bills in this list are included in the contribution calculation; one-off spending and variable everyday purchases are excluded.
-
-The app stores the income settings and recurring bills locally in this browser, alongside transactions. Export a JSON backup regularly. This version does not synchronise data between phones.
+## PWA files
+- `index.html` — app interface and logic
+- `manifest.json` — installable app metadata
+- `sw.js` — offline app-shell cache
+- `icon-192.png`, `icon-512.png`, `icon.svg` — app icons
