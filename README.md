@@ -1,4 +1,4 @@
-# Household Expense Tracker 1.3
+# Household Expense Tracker 1.4
 
 A mobile-friendly, installable web app for tracking personal and shared household finances in GBP. It stores records locally in the browser; it does not sync data between devices.
 
